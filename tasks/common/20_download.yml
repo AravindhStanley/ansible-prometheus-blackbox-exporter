@@ -1,0 +1,11 @@
+- name: Download blackbox exporter release from github
+  ansible.builtin.get_url:
+    url: "{{ blackbox_exporter_download_url }}"
+    dest: "{{ blackbox_remote_package_path }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-{{ blackbox_machine_arch }}.tar.gz"
+    mode: "755"
+
+- name: Unarchive the release file
+  ansible.builtin.unarchive:
+    src: "{{ blackbox_remote_package_path }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-{{ blackbox_machine_arch }}.tar.gz"
+    dest: "{{ blackbox_remote_package_path }}/"
+    remote_src: true

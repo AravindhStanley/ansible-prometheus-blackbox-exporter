@@ -1,0 +1,8 @@
+- name: "Setup user"
+  ansible.builtin.include_tasks: tasks/common/10_user_setup.yml
+
+- name: "Download Blackbox Exporter"
+  ansible.builtin.include_tasks: tasks/common/20_download.yml
+
+- name: "Install, Configure and Start Blackbox Exporter"
+  ansible.builtin.include_tasks: tasks/common/30_install.yml

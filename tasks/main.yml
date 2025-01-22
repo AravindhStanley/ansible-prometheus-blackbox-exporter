@@ -1,0 +1,28 @@
+---
+# tasks file for prometheus-blackbox-exporter
+- name: Set CPU Arch to AMD64
+  ansible.builtin.set_fact:
+    blackbox_machine_arch: amd64
+  when: ansible_architecture == 'x86_64'
+
+- name: Set CPU Arch to ARM64
+  ansible.builtin.set_fact:
+    blackbox_machine_arch: arm64
+  when: ansible_architecture == 'aarch64'
+
+- name: Assert that blackbox_machine_arch is set
+  ansible.builtin.assert:
+    that:
+      - blackbox_machine_arch is defined
+      - blackbox_machine_arch | trim | length > 0
+    fail_msg: >
+      Error: blackbox_machine_arch is empty. 
+      This could be because the target system is neither amd64 nor arm64"
+
+- debug:
+    msg: "{{ ansible_os_family }}"
+
+- name: Debian/RedHat - Deploy Prometheus Blackbox Exporter
+  ansible.builtin.include_tasks: common/main.yml
+  when:
+    - ansible_os_family in ['Debian', 'RedHat']

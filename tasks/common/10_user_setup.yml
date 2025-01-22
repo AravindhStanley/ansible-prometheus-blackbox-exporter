@@ -1,0 +1,5 @@
+- name: Setup Prometheus user
+  ansible.builtin.user:
+    name: prometheus
+    state: present
+    system: true

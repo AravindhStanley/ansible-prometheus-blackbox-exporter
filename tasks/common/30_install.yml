@@ -1,0 +1,49 @@
+- name: Move the binary file to the standard bin path
+  ansible.builtin.copy:
+    src: "{{ blackbox_remote_package_path }}/blackbox_exporter-{{ blackbox_exporter_version }}.linux-{{ blackbox_machine_arch }}/blackbox_exporter"
+    dest: "/usr/bin/prometheus-blackbox-exporter"
+    owner: "{{ blackbox_exporter_user }}"
+    group: "{{ blackbox_exporter_user }}"
+    mode: 0755
+
+- name: Create blackbox configuration directory
+  ansible.builtin.file:
+    path: "{{ blackbox_configuration_path }}/"
+    state: directory
+    mode: "0750"
+    owner: "{{ blackbox_exporter_user }}"
+    group: "{{ blackbox_exporter_user }}"
+
+- name: Copy the blackbox configuration to the target machine.
+  ansible.builtin.template:
+    src: blackbox.yml.j2
+    dest: "{{ blackbox_configuration_path }}/blackbox.yml"
+    owner: "{{ blackbox_exporter_user }}"
+    group: "{{ blackbox_exporter_user }}" 
+    mode: 0755
+
+- name: Configure blackbox as a systemd unit
+  ansible.builtin.template:
+    src: prometheus-blackbox-exporter.service.j2
+    dest: /lib/systemd/system/prometheus-blackbox-exporter.service
+    owner: "{{ blackbox_exporter_user }}"
+    group: "{{ blackbox_exporter_user }}" 
+    mode: 0644
+
+- name: Configure Default Blackbox Env file
+  ansible.builtin.template:
+    src: defaults/prometheus-blackbox-exporter.j2
+    dest: /etc/default/prometheus-blackbox-exporter
+    owner: "{{ blackbox_exporter_user }}"
+    group: "{{ blackbox_exporter_user }}"
+    mode: 0644
+  
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: yes
+  
+- name: Restart blackbox exporter
+  ansible.builtin.service:
+    name: prometheus-blackbox-exporter
+    state: restarted
