@@ -1,0 +1,8 @@
+---
+# defaults file for prometheus-blackbox-exporter
+blackbox_machine_arch: ""
+blackbox_exporter_user: prometheus
+blackbox_remote_package_path: "/tmp"
+blackbox_configuration_path: "/etc/prometheus-blackbox-exporter"
+blackbox_exporter_version: 0.25.0
+blackbox_exporter_download_url: "https://github.com/prometheus/blackbox_exporter/releases/download/v0.25.0/blackbox_exporter-{{ blackbox_exporter_version }}.linux-{{ blackbox_machine_arch }}.tar.gz"
