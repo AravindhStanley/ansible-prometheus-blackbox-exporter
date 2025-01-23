@@ -1,15 +1,5 @@
 ---
 # tasks file for prometheus-blackbox-exporter
-- name: Set CPU Arch to AMD64
-  ansible.builtin.set_fact:
-    blackbox_machine_arch: amd64
-  when: ansible_architecture == 'x86_64'
-
-- name: Set CPU Arch to ARM64
-  ansible.builtin.set_fact:
-    blackbox_machine_arch: arm64
-  when: ansible_architecture == 'aarch64'
-
 - name: Assert that blackbox_machine_arch is set
   ansible.builtin.assert:
     that:
