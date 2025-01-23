@@ -1,5 +1,6 @@
 ---
 # defaults file for prometheus-blackbox-exporter
+action: "install"
 blackbox_machine_arch: "{{ go_arch_map[ansible_architecture] }}"
 blackbox_exporter_user: prometheus
 blackbox_remote_package_path: "/tmp"

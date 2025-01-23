@@ -16,3 +16,4 @@
   ansible.builtin.include_tasks: common/main.yml
   when:
     - ansible_os_family in ['Debian', 'RedHat']
+    - 'action == "install"'
