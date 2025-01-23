@@ -17,3 +17,8 @@
   when:
     - ansible_os_family in ['Debian', 'RedHat']
     - 'action == "install"'
+
+- name: Debian/RedHat - Uninstall Prometheus Blackbox Exporter
+  ansible.builtin.include_tasks: common/uninstall.yml
+  when:
+    - 'action == "uninstall"'
